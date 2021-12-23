@@ -1,7 +1,6 @@
 from typing import List
 import json
 import heapq
-
 from src.classes.Geolocation import Geolocation
 from src.classes.Node import Node
 from src.interfaces.GraphAlgoInterface import GraphAlgoInterface
@@ -29,7 +28,7 @@ class DiGraphAlgo(GraphAlgoInterface):
                 data = json.load(json_file)
 
             for node in data['Nodes']:
-                loaded_graph.add_node(Geolocation(','.split(node['pos'])), node['id'])
+                loaded_graph.add_node(node['id'],Geolocation(','.split(node['pos'])))
 
             for edge in data['Edges']:
                 loaded_graph.add_edge(edge['src'], edge['dest'], edge['w'])
