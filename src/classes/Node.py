@@ -14,8 +14,20 @@ class Node:
         self._in = {}
         self._out = {}
 
+    def __lt__(self, other):
+        return self.tag < other.get_tag()
+
+    def __gt__(self, other):
+        return self.tag > other.get_tag()
+
+    def __eq__(self, other):
+        return self.tag == other.get_tag()
+
+    def __str__(self):
+        return str(self.key)
+
     # Return the location of the node
-    def get_Location(self) -> Geolocation:
+    def get_location(self) -> Geolocation:
         return self.location
 
     # Change the location of the node to new_loc

@@ -105,4 +105,7 @@ def check3():
 
 
 if __name__ == '__main__':
-    check()
+    DGA = DiGraphAlgo()
+    DGA.load_from_json("..\\..\\data\\A1.json")
+    DGA.plot_graph()
+    # check()

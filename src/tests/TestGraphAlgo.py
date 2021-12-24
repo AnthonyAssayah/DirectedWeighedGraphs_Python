@@ -1,9 +1,6 @@
 import unittest
-from unittest import TestCase
 from src.classes.DiGraph import DiGraph
 from src.classes.DiGraphAlgo import DiGraphAlgo
-from src.classes.Node import Node
-from src.classes.Geolocation import Geolocation
 
 
 def create_graph() -> DiGraphAlgo:
@@ -54,10 +51,11 @@ class TestGraphAlgo(unittest.TestCase):
         self.assertTrue(Algo.save_to_json("G2.json"))
 
     def test_shortest_path(self):
-        Algo = create_graph()
-        algo = Algo.shortest_path(0, 3)
-        shortest = (3, [0, 1, 3])
-        self.assertEqual(shortest, algo)
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = Algo.shortest_path(0, 2)
+        comp = [Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[1], Algo.get_graph().get_all_v()[2]]
+        self.assertEqual(dist, comp)
 
     def test_tsp(self):
         assert False

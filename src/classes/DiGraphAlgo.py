@@ -1,7 +1,12 @@
-from typing import List
+import sys
+from queue import PriorityQueue
 import json
 import heapq
+
+import numpy as np
+
 from src.classes.Geolocation import Geolocation
+from src.classes.Gui import Gui
 from src.classes.Node import Node
 from src.interfaces.GraphAlgoInterface import GraphAlgoInterface
 from src.interfaces.GraphInterface import GraphInterface
@@ -11,6 +16,8 @@ from src.classes.DiGraph import DiGraph
 class DiGraphAlgo(GraphAlgoInterface):
 
     def __init__(self, DWG: DiGraph = None):
+
+        self.djkhelper = {}
 
         if DWG is None:
             self.DWG = DiGraph()
@@ -28,7 +35,10 @@ class DiGraphAlgo(GraphAlgoInterface):
                 data = json.load(json_file)
 
             for node in data['Nodes']:
-                loaded_graph.add_node(node['id'],Geolocation(','.split(node['pos'])))
+                values = np.fromstring(node['pos'], dtype=float, sep=',')
+                loc = Geolocation(values[0], values[1], values[2])
+
+                loaded_graph.add_node(node['id'], loc)
 
             for edge in data['Edges']:
                 loaded_graph.add_edge(edge['src'], edge['dest'], edge['w'])
@@ -40,30 +50,6 @@ class DiGraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-
-
-        # nodes = self.D.get_all_v()
-        #
-        # data = {'Edges': [], 'Nodes': []}
-        #
-        # for n in nodes:
-        #     node = nodes[n]
-        #     if node.pos:
-        #         data['Nodes'].append({
-        #             'id': node.key,
-        #             'pos': node.pos
-        #         })
-        #     else:
-        #         data['Nodes'].append({
-        #             'id': node.key
-        #         })
-        #
-             # for o in node.out_edges:
-        #         data['Edges'].append({
-        #             'src': node.key,
-        #             'dest': o,
-        #             'w': node.out_edges[o].weight
-        #         })
 
         data = {'Edges': [], 'Nodes': []}
         vertice = self.DWG.get_all_v()
@@ -86,80 +72,54 @@ class DiGraphAlgo(GraphAlgoInterface):
                 })
         try:
             with open('HII', 'w') as file:
-                json.dump(data, file)
+                json.dump(data, file, indent=4, sort_keys=True)
 
         except FileNotFoundError or FileExistsError or OSError:
             print("Cannot read the file")
             return False
 
-    def shortest_path(self, id1: int, id2: int) -> (float, list):
+    def shortest_path(self, src, dest) -> (float, list):
+        self.dijkstra(self.DWG.get_all_v()[src])
+        path = []
+        cur = dest
+        while cur != src and self.djkhelper[cur] != None:
+            path.append(self.DWG.get_all_v()[cur])
+            cur = self.djkhelper[cur]
+        path.append(self.DWG.get_all_v()[src])
+        path.reverse()
+        return path
 
-        n1 = self.DWG.nodes.get(id1)
-        n2 = self.DWG.nodes.get(id2)
+    def plot_graph(self):
+        Gui(self)
 
-        if n1 is None or n2 is None:
-            raise Exception("n1 or n2 doesn't exist in the graph")
-
-        if id1 == id2:
-            return 0, [id1]
-
-        allNodes = self.DWG.get_all_v()
-
-        dist = {node: float("inf") for node in allNodes}
-        parent = {id1: -1}
-        dist[id1] = 0
-        prior_q = [(dist[id1], id1)]
-
-        while prior_q:
-            curr = heapq.heappop(prior_q)
-            if dist[curr] == "inf":
-                break
-            for adj, edge in self.DWG.all_out_edges_of_node(curr):    # curr.get_key()
-                shortest = dist[curr] + edge.get_weight()
-                if dist[adj] > shortest:
-                    dist[adj] = shortest
-                    parent[adj] = curr
-                    heapq.heappush(prior_q, (dist[adj], adj))
-                    # if curr == id2:
-                    #     break
-
-        path, tmp = [], n2
-        if dist[id2] == "inf":
-            return "inf", []
-        while tmp != -1 and tmp != id1:
-            path.insert(0, tmp)
-            tmp = parent[tmp]
-
-        return dist[id2], path
-
-    def TSP(self, node_lst: List[int]) -> (List[int], float):
-
-        tsp_path = []
-        curr_list = []
-
-        for i in range(node_lst.__len__()):
-            curr_list.append(node_lst.index(i))
-
-        tmp = Node(node_lst.index(0))
-        tsp_path.append(self.DWG.nodes(curr_list.index(0)))
-        curr_list.remove(0)
-
-        while curr_list:
-
-            shortest = float("inf")
-            node_id = -1
-            index = -1
-
-            for i in range(curr_list):
-                key = curr_list.index(i)
-                if shortestPathDist(tmp.get_key() < shortest):
-                    shortest = shortestPathDist(tmp.get_key(), key)
-                    node_id = key
-                    index = i
-
-            short_list = []
-            short_list = shortest_path(tmp.get_key(), node_id)
-            short_list
+    # def TSP(self, node_lst: List[int]) -> (List[int], float):
+    #
+    #     tsp_path = []
+    #     curr_list = []
+    #
+    #     for i in range(node_lst.__len__()):
+    #         curr_list.append(node_lst.index(i))
+    #
+    #     tmp = Node(node_lst.index(0))
+    #     tsp_path.append(self.DWG.nodes(curr_list.index(0)))
+    #     curr_list.remove(0)
+    #
+    #     while curr_list:
+    #
+    #         shortest = float("inf")
+    #         node_id = -1
+    #         index = -1
+    #
+    #         for i in range(curr_list):
+    #             key = curr_list.index(i)
+    #             if shortestPathDist(tmp.get_key() < shortest):
+    #                 shortest = shortestPathDist(tmp.get_key(), key)
+    #                 node_id = key
+    #                 index = i
+    #
+    #         short_list = []
+    #         short_list = shortest_path(tmp.get_key(), node_id)
+    #         short_list
 
 
     #         List<NodeData> short_list = shortestPath(tmp.getKey(), node_id);
@@ -176,38 +136,73 @@ class DiGraphAlgo(GraphAlgoInterface):
     #
     #     return tsp_path;
     # }
-    def BFS(self, s):
+    def BFS(self, s) -> {}: #Returns array of nodes
 
-        # Mark all the vertices as not visited
+        # Mark not visited
         visited = [False] * (max(self.DWG) + 1)
 
-        # Create a queue for BFS
+        # Create a queue
         queue = []
 
-        # Mark the source node as
-        # visited and enqueue it
+        # Create an array
+        array = []
+
+        # Mark the source node as visited and enqueue it
         queue.append(s)
         visited[s] = True
 
         while queue:
 
-            # Dequeue a vertex from
-            # queue and print it
+            # Dequeue a vertex from queue and save to array
             s = queue.pop(0)
-            print(s, end=" ")
+            array.append(s)
 
-            # Get all adjacent vertices of the
-            # dequeued vertex s. If a adjacent
-            # has not been visited, then mark it
-            # visited and enqueue it
-            for i in self.DWG[s]:
-                if visited[i] == False:
-                    queue.append(i)
-                    visited[i] = True
+            # Get all neighbors vertices of the dequeued vertex s
+            # If a neighbor has not been visited, then mark it visited and enqueue it
+            for n in self.DWG.get_all_v():
+                if visited[n] == False:
+                    queue.append(n)
+                    visited[n] = True
 
+        return array
 
-    def centerPoint(self) -> (int, float):
-        pass
+    def shortest_path_dist(self, src, dest):
+        # check if graph is connected first!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        dist = self.dijkstra(self.DWG.get_all_v()[src]).get(dest)
+        return dist
 
-    def plot_graph(self) -> None:
-        pass
+    #Input(graph,int),Output(hashmap:int-double)
+    #Uses priority queue to oreder nodes by their wights
+    def dijkstra(self, src) -> dict: # hashmap from int -> float
+        # hashmap:int-double
+        distance = {}
+        for n in self.DWG.get_all_v().values():
+            distance[n.get_key()] = sys.float_info.max
+        pq = PriorityQueue(len(distance))
+        pq.put(Node(Geolocation(), 0), src.get_key())
+        distance[src.get_key()] = 0.0
+        self.djkhelper[src.get_key()] = -1
+        settled = set()
+        while len(settled) != len(self.DWG.get_all_v()):
+            if pq.empty():
+                return distance
+            u = pq.get().get_key()
+            if u in settled:
+                continue
+            settled.add(u)
+
+            for e in self.DWG.all_out_edges_of_node(u).values():
+                dest = self.DWG.get_all_v()[e.get_destination()]
+                if dest.get_key() not in settled:
+
+                    edge_distance = e.get_weight()
+                    new_distance = distance[u] + edge_distance
+
+                    if new_distance < distance[dest.get_key()]:
+                        distance[dest.get_key()] = new_distance
+                        self.djkhelper[dest.get_key()] = u
+                    n2 = Node(Geolocation(), dest.get_key())
+                    n2.set_tag(distance[dest.get_key()])
+                    pq.put(n2)
+
+        return distance
