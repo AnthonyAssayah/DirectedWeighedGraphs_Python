@@ -57,9 +57,9 @@ class DiGraphAlgo(GraphAlgoInterface):
             v = vertice[edge]
             if v.location:
                 data['Nodes'].append({
-                        'id': v.key,
-                        'pos': v.location
-                    })
+                    'id': v.key,
+                    'pos': v.location
+                })
             else:
                 data['Nodes'].append({
                     'id': v.key
@@ -92,6 +92,53 @@ class DiGraphAlgo(GraphAlgoInterface):
     def plot_graph(self):
         Gui(self)
 
+    def TSP(self, node_list):
+        if node_list is None:
+            return None
+
+        priority = []  # contains nodes
+        unhandled = []  # contains ints
+
+        for n in node_list:
+            unhandled.append(n.get_key())
+
+        cur = node_list[0]
+
+        priority.append(self.DWG.get_all_v()[unhandled[0]])
+
+        unhandled.remove(0)
+
+        while unhandled:
+            shortest_dist = sys.float_info.max
+
+            id_short = sys.float_info.min
+            location = sys.float_info.min
+
+            for i in range(len(unhandled)):
+                key = unhandled[i]
+                temp = self.shortest_path_dist(cur.get_key(), key)
+
+                if temp < shortest_dist:
+                    shortest_dist = temp
+                    id_short = key
+                    location = i
+
+            shortest_path = self.shortest_path(cur.get_key(), id_short)
+            shortest_path.remove(shortest_path[0])
+
+            while shortest_path:
+                priority.append(shortest_path[0])
+                shortest_path.remove(shortest_path[0])
+
+            node_id = unhandled[location]
+            cur = self.DWG.get_all_v()[node_id]
+            unhandled.remove(unhandled[location])
+
+        if len(priority) == 1:
+            return None
+        else:
+            return priority
+
     # def TSP(self, node_lst: List[int]) -> (List[int], float):
     #
     #     tsp_path = []
@@ -121,7 +168,6 @@ class DiGraphAlgo(GraphAlgoInterface):
     #         short_list = shortest_path(tmp.get_key(), node_id)
     #         short_list
 
-
     #         List<NodeData> short_list = shortestPath(tmp.getKey(), node_id);
     #         short_list.remove(0);
     #
@@ -136,7 +182,7 @@ class DiGraphAlgo(GraphAlgoInterface):
     #
     #     return tsp_path;
     # }
-    def BFS(self, s) -> {}: #Returns array of nodes
+    def BFS(self, s) -> {}:  # Returns array of nodes
 
         # Mark not visited
         visited = [False] * (max(self.DWG) + 1)
@@ -171,9 +217,9 @@ class DiGraphAlgo(GraphAlgoInterface):
         dist = self.dijkstra(self.DWG.get_all_v()[src]).get(dest)
         return dist
 
-    #Input(graph,int),Output(hashmap:int-double)
-    #Uses priority queue to oreder nodes by their wights
-    def dijkstra(self, src) -> dict: # hashmap from int -> float
+    # Input(graph,int),Output(hashmap:int-double)
+    # Uses priority queue to oreder nodes by their wights
+    def dijkstra(self, src) -> dict:  # hashmap from int -> float
         # hashmap:int-double
         distance = {}
         for n in self.DWG.get_all_v().values():

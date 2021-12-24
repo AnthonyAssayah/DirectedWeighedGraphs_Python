@@ -65,3 +65,10 @@ class TestGraphAlgo(unittest.TestCase):
 
     def test_plot_graph(self):
         assert False
+
+    def test_TSP(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = Algo.TSP([Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[2]])
+        comp = [Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[1], Algo.get_graph().get_all_v()[2]]
+        self.assertEqual(dist, comp)
