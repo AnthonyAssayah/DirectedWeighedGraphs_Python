@@ -61,10 +61,29 @@ class TestGraphAlgo(unittest.TestCase):
         assert False
 
     def test_center_point(self):
-        assert False
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = Algo.center()
+        self.assertEqual(dist, Algo.get_graph().get_all_v()[8])
+
+    def test_connected(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        self.assertTrue(Algo.connected())
+        Algo.get_graph().remove_node(7)
+        Algo.get_graph().remove_node(10)
+        self.assertFalse(Algo.connected())
+
+    def test_BFS(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        Algo.BFS(0)
+        Algo.get_graph().remove_node(7)
+        Algo.get_graph().remove_node(10)
+        Algo.BFS(0)
 
     def test_plot_graph(self):
-        assert False
+        assert True
 
     def test_TSP(self):
         Algo = DiGraphAlgo()
