@@ -1,4 +1,4 @@
-![Minimal_Chart_01](https://user-images.githubusercontent.com/92322613/147286414-a95a193b-e4c0-4d78-8e38-a174583092d5.gif)
+<img src="https://user-images.githubusercontent.com/92322613/147365603-c346114a-37d3-4742-b771-75fbe740f100.gif" width="1000" height="260" />
 
 
 # Directed & Weighted Graphs - EX3_OOP
@@ -149,14 +149,18 @@ Each ```Node``` contains five attributes:
 
 | **Main methods**      |    **Explanation**  | 
 |-----------------|-----------------------|
-| ` __init__(self, DWG: DiGraph = None)` | Initialize a new Directed Graph |
-| `get_graph(self) -> GraphInterface` | Returns the directed graph on which the algorithm works on |
-| `load_from_json(self, file_name: str) -> bool` | Loads a `DiGraph` to this `DiGraphAlgo` from a **JSON** format |
-| `save_to_json(self, file_name: str) -> bool` | Saves this `DiGraph` to the given file name in a **JSON** format |
-| `shortest_path(self, id1: int, id2: int) -> (float, list)` |  Returns the nodes in the shortest path between src to dest in a list, using `Dijkstra` |
-| `centerPoint(self) -> (int, float)` | Returns the node which minimizes the max distance to all the other nodes, that means the min of all max shortest path over all nodes |
-| `TSP(self, node_lst: List[int]) -> (List[int], float)` | Finds the shortest path that visits all the nodes in the list |
-| `plot_graph(self) -> None` | Plots the graph in a gui |
+| ` __init__(self, DWG: DiGraph = None)` | Initialize a new Directed Graph. |
+| `get_graph(self) -> GraphInterface` | Returns the directed graph on which the algorithm works on. |
+| `load_from_json(self, file_name: str) -> bool` | Loads a `DiGraph` to this `DiGraphAlgo` from a **JSON** format. |
+| `save_to_json(self, file_name: str) -> bool` | Saves this `DiGraph` to the given file name in a **JSON** format. |
+| `shortest_path(self, id1: int, id2: int) -> (float, list)` |  Returns the nodes in the shortest path between src to dest in a list, using `Dijkstra`. |
+| `centerPoint(self) -> (int, float)` | Returns the node which minimizes the max distance to all the other nodes, that means the min of all max shortest path over all nodes. |
+| ` def shortest_path_dist(self, src, dest):` | Returns the length value (weight) of the shortest path between src to dest, using `Dijkstra`.|
+| `def connected(self):` | Check if there is a valid path from every node to each node, using `BFS(self, src)`. |
+| `getTranspose(self):` | Inverse the direction of all the edges of the graph. |
+| `BFS(self, src):` | Applicate BFS algorithm means visiting all the nodes of a graph in order to verify if the graph is connected. |
+| `TSP(self, node_lst: List[int]) -> (List[int], float)` | Finds the shortest path that visits all the nodes in the list. |
+| `plot_graph(self) -> None` | Plots the graph in a gui. |
   
 > Test on this class: *TestDiGraphAlgo.py* 
 
@@ -167,4 +171,11 @@ Each ```Node``` contains five attributes:
   
   ## UML Diagram 📊
  <br />
+ 
+ UML Diagram of the classes and interfaces:
+   <p align="center">
+   <img width="820" height="670" src="https://user-images.githubusercontent.com/92322613/147382399-90497ad3-3b5f-4bc2-ac17-49255949efa8.png">
+</p>
+   <br />
+
   
