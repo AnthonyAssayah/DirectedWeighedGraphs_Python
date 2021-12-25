@@ -7,18 +7,9 @@ This project is based on a previous assigment of ***Directed and Weighted Graphs
 
 <br />
 
-## External Sources 🔎
 
-- Explanation about the *Dijkstra Algorithm* on this [Youtube](https://www.youtube.com/watch?v=XB4MIexjvY0&list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O&index=45) video, detailling
- all the process in examples with the drawbacks and analysing the time complexity.
- 
- - Inofrmation about the famous problem of [Travelling salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem).This optimization problem which consists in determining, given a list of cities and the distances between all the pairs of cities, the shortest circuit that passes through every town once and only once.
 
-- Tutorial on the [*BFS Algorithm*](https://www.programiz.com/dsa/graph-bfs).This algorithm is used to calculate the distances of all the nodes from a source node in an  graph directed or not directed.
-
-- Website of [Matplotlib](https://matplotlib.org/) to learn about all the components and function to create a GUI in Pyhton.
-
-## Interfaces & Classes 🎯
+## Interfaces & Classes 📌
 
 There are 5 classes defined in this project, the interfaces are in the ```api``` package and their implementations can be found in ```classes``` package. Their properties and 
 methods are detailed below.
@@ -178,4 +169,14 @@ Each ```Node``` contains five attributes:
 </p>
    <br />
 
+ ## External Sources 🔎
+
+- Explanation about the *Dijkstra Algorithm* on this [Youtube](https://www.youtube.com/watch?v=XB4MIexjvY0&list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O&index=45) video, detailling
+ all the process in examples with the drawbacks and analysing the time complexity.
+ 
+ - Inofrmation about the famous problem of [Travelling salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem).This optimization problem which consists in determining, given a list of cities and the distances between all the pairs of cities, the shortest circuit that passes through every town once and only once.
+
+- Tutorial on the [*BFS Algorithm*](https://www.programiz.com/dsa/graph-bfs).This algorithm is used to calculate the distances of all the nodes from a source node in an  graph directed or not directed.
+
+- Website of [Matplotlib](https://matplotlib.org/) to learn about all the components and function to create a GUI in Pyhton.
   
