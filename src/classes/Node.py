@@ -89,3 +89,7 @@ class Node:
             return True
         else:
             return False
+
+    def __repr__(self) -> str:
+
+        return str(self.key) + ": |edges out| " + str(self._out.__len__()) + " |edges in| " + str(self._in.__len__())

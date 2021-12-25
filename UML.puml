@@ -1,0 +1,200 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class DiGraph
+class DiGraphAlgo
+class Node
+class Edge
+class Geolocation
+class main
+class Gui
+interface GraphAlgoInterface
+interface GraphInterface
+
+GraphInterface <|.. DiGraph
+GraphAlgoInterface <|.. DiGraphAlgo
+Geolocation .. Node
+DiGraphAlgo .. Gui
+Node "1" *-- "many" DiGraph
+Edge "1" *-- "many" DiGraph
+Node --  DiGraphAlgo
+Edge --  DiGraphAlgo
+DiGraphAlgo -- main
+DiGraph -- main
+DiGraphAlgo -- DiGraph
+
+scale 750 width
+package collections <<Folder>> {
+  class ChainMap
+
+}
+
+package queue <<Folder>> {
+  class PriorityQueue
+}
+
+package matplotlib  <<Cloud>> {
+  class patches
+  class pylot
+}
+
+collections -- DiGraphAlgo
+queue -- DiGraphAlgo
+matplotlib -- Gui
+
+
+
+
+
+class Node {
+
+        -self.key
+        -self.location
+        -self.info
+        -self.tag
+        -self._in
+        -self._out
+
+        # __init__(self, location=Geolocation(), key=0):
+        #__lt__(self, other)
+        + __gt__(self, other):
+        + __eq__(self, other):
+        + __str__(self):
+        + get_location(self) -> Geolocation:
+        + set_location(self, new_loc) -> None:
+        + get_key(self) -> int:
+        + set_key(self, new_key) -> None:
+        + get_info(self) -> str:
+        + set_info(self, new_info) -> None:
+        + get_tag(self) -> int:
+        + set_tag(self, new_tag) -> None:
+        + get_in(self) -> dict:
+        + get_out(self) -> dict:
+        + add_in(self, new_key, weight) -> None:
+        + add_out(self, new_key, weight) -> None:
+        + remove_in(self, node_data: int) -> bool:
+        + remove_out(self, node_data: int) -> bool:
+}
+
+class Edge {
+
+        -self.source = source
+        -self.destination = destination
+        -self.weight = weight
+
+        #__init__(self, source=0, destination=0, weight=0.0):
+        + get_source(self) -> int:
+        + set_source(self, new_source) -> None:
+        + get_destination(self) -> int:
+        + set_destination(self, new_destination) -> None:
+        + get_weight(self) -> float:
+        + set_weight(self, new_weight) -> None:
+
+}
+
+
+class Geolocation {
+
+        -self.x = x
+        -self.y = y
+        -self.z = z
+
+        #__init__(self, x=0, y=0, z=0):
+        + distance(self, loc) -> float:
+        + x(self) -> float:
+        + y(self) -> float:
+        + z(self) -> float:
+}
+
+interface GraphAlgoInterface <<Interface>> {
+
+        + get_graph(self) -> GraphInterface:
+        +load_from_json(self, file_name: str) -> bool:
+        +save_to_json(self, file_name: str) -> bool:
+        +shortest_path(self, id1: int, id2: int) -> (float, list):
+        +TSP(self, node_lst: List[int]) -> (List[int], float):
+        +centerPoint(self) -> (int, float):
+        +plot_graph(self) -> None:
+
+}
+interface GraphInterface <<Interface>> {
+
+        + v_size(self) -> int:
+        +e_size(self) -> int:
+        +get_all_v(self) -> dict:
+        +all_in_edges_of_node(self, id1: int) -> dict:
+        + all_out_edges_of_node(self, id1: int) -> dict:
+        +get_mc(self) -> int:
+        +add_edge(self, id1: int, id2: int, weight: float) -> bool:
+        +add_node(self, node_id: int, pos: tuple = None) -> bool:
+        +remove_node(self, node_id: int) -> bool:
+        +remove_edge(self, node_id1: int, node_id2: int) -> bool:
+}
+
+class DiGraph {
+
+
+        -self.number_of_edges
+        -self.number_of_nodes
+        -self.nodes
+        -self.edges
+        -self.mc
+
+        #def __init__(self):
+        +def v_size(self) -> int:
+        +def e_size(self) -> int:
+        +def get_mc(self) -> int:
+        +def get_all_v(self) -> dict:
+        +def all_in_edges_of_node(self, id1: int) -> dict:
+        +def all_out_edges_of_node(self, id1: int) -> dict:
+        +def add_edge(self, id1: int, id2: int, weight: float) -> bool:
+        +def add_node(self, node_id: int, pos: tuple = None) -> bool:
+        +def remove_node(self, node_id: int) -> bool:
+        +def remove_edge(self, node_id1: int, node_id2: int) -> bool:
+
+}
+
+class DiGraphAlgo {
+
+
+        - self.DWG = DiGraph
+
+        + get_graph(self) -> GraphInterface
+        +load_from_json(self, file_name: str) -> bool:
+        +save_to_json(self, file_name: str) -> bool:
+        +shortest_path(self, src, dest) -> (float, list):
+        +centerPoint(self) -> (int, float):
+        +TSP(self, node_lst: List[int]) -> (List[int], float):
+        + plot_graph(self) -> None:
+        - connected(self):
+        - shortest_path_dist(self, src, dest):
+        - getTranspose(self):
+        - BFS(self, src):
+        - dijkstra(self, src) -> dict:
+
+}
+
+class main {
+
+    +check():
+    +check1():
+    +check2():
+    +check3():
+    #__name__ == '__main__':
+}
+
+class Gui {
+
+        -self.DGA = DGA
+        -self.screen_size = 100
+        -self.draw()
+
+        #__init__(self, DGA):
+        +draw(self):
+        +draw_nodes(self):
+        +draw_edges(self):
+
+}
+
+@enduml

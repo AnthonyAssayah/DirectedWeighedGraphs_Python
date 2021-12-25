@@ -31,3 +31,7 @@ class Edge:
     # Change the weight of the edge as new_weight
     def set_weight(self, new_weight) -> None:
         self.weight = new_weight
+
+    def __repr__(self) -> str:
+
+        return str(self.weight)

@@ -33,35 +33,151 @@ class TestGraphAlgo(unittest.TestCase):
         graph = graph_Algo.get_graph()
         self.assertTrue(graph_Algo.get_graph, graph)
 
-    def test_load_from_json(self):
-        Algo = create_graph()
-        self.assertTrue(Algo.load_from_json("../../data/A0.json"))
-        self.assertTrue(Algo.load_from_json("../../data/A1.json"))
-        self.assertTrue(Algo.load_from_json("../../data/A2.json"))
-        self.assertTrue(Algo.load_from_json("../../data/A3.json"))
-        self.assertFalse(Algo.load_from_json("../../data/A6.json"))
+    def test_loadsaved_from_json(self):
 
-    def test_save_to_json(self):
-        Algo = create_graph()
-        Algo.load_from_json("../../data/A0.json")
-        self.assertTrue(Algo.save_to_json("G0.json"))
-        Algo.load_from_json("../../data/A1.json")
-        self.assertTrue(Algo.save_to_json("G1.json"))
-        Algo.load_from_json("../../data/A2.json")
-        self.assertTrue(Algo.save_to_json("G2.json"))
+        ##################### A0 ######################
+
+        AlgoA0 = create_graph()
+        A0 = AlgoA0.get_graph()
+        AlgoA0.__init__(A0)
+        loadedA0 = AlgoA0.load_from_json("../../data/A0.json")
+        savedA0 = AlgoA0.save_to_json("A0Nodes.json")
+        new_AlgoA0 = AlgoA0.get_graph()
+
+        self.assertTrue(loadedA0)
+        self.assertTrue(savedA0)
+        self.assertEqual(AlgoA0.get_graph(), new_AlgoA0)
+
+        # # ##################### A1 ######################
+
+        AlgoA1 = create_graph()
+        A1 = AlgoA1.get_graph()
+        AlgoA1.__init__(A1)
+        loadedA1 = AlgoA1.load_from_json("../../data/A1.json")
+        savedA1 = AlgoA1.save_to_json("A1Nodes.json")
+        new_AlgoA1 = AlgoA1.get_graph()
+
+        self.assertTrue(loadedA1)
+        self.assertTrue(savedA1)
+        self.assertEqual(AlgoA1.get_graph(), new_AlgoA1)
+
+        # # ##################### A2 ######################
+
+        AlgoA2 = create_graph()
+        A2 = AlgoA2.get_graph()
+        AlgoA2.__init__(A2)
+        loadedA2 = AlgoA2.load_from_json("../../data/A2.json")
+        savedA2 = AlgoA2.save_to_json("A2Nodes.json")
+        new_AlgoA2 = AlgoA2.get_graph()
+
+        self.assertTrue(loadedA2)
+        self.assertTrue(savedA2)
+        self.assertEqual(AlgoA2.get_graph(), new_AlgoA2)
+
+        # # ##################### A3 ######################
+
+        AlgoA3 = create_graph()
+        A3 = AlgoA3.get_graph()
+        AlgoA3.__init__(A3)
+        loadedA3 = AlgoA3.load_from_json("../../data/A3.json")
+        savedA3 = AlgoA3.save_to_json("A3Nodes.json")
+        new_AlgoA3 = AlgoA3.get_graph()
+
+        self.assertTrue(loadedA3)
+        self.assertTrue(savedA3)
+        self.assertEqual(AlgoA3.get_graph(), new_AlgoA3)
+
+        # # ##################### A4 ######################
+
+        AlgoA4 = create_graph()
+        A4 = AlgoA4.get_graph()
+        AlgoA4.__init__(A4)
+        loadedA4 = AlgoA4.load_from_json("../../data/A4.json")
+        savedA4 = AlgoA4.save_to_json("A4Nodes.json")
+        new_AlgoA4 = AlgoA4.get_graph()
+
+        self.assertTrue(loadedA4)
+        self.assertTrue(savedA4)
+        self.assertEqual(AlgoA4.get_graph(), new_AlgoA4)
+
+        # # ##################### A5 ######################
+
+        AlgoA5 = create_graph()
+        A5 = AlgoA5.get_graph()
+        AlgoA5.__init__(A5)
+        loadedA5 = AlgoA5.load_from_json("../../data/A5.json")
+        savedA5 = AlgoA5.save_to_json("A5Nodes.json")
+        new_AlgoA5 = AlgoA5.get_graph()
+
+        self.assertTrue(loadedA5)
+        self.assertTrue(savedA5)
+        self.assertEqual(AlgoA5.get_graph(), new_AlgoA5)
+
+        # ##################### 1000Nodes ######################
+
+        Algo1000Nodes = create_graph()
+        A1000Nodes = Algo1000Nodes.get_graph()
+        Algo1000Nodes.__init__(A1000Nodes)
+        loadedAlgo1000Nodes = Algo1000Nodes.load_from_json("../../data/1000Nodes.json")
+        savedAlgo1000Nodes = Algo1000Nodes.save_to_json("1000NODES.json")
+        new_Algo1000Nodes = Algo1000Nodes.get_graph()
+
+        self.assertTrue(loadedAlgo1000Nodes)
+        self.assertTrue(savedAlgo1000Nodes)
+        self.assertEqual(Algo1000Nodes.get_graph(), new_Algo1000Nodes)
+
+        # ##################### 10000Nodes ######################
+
+        Algo10000Nodes = create_graph()
+        A10000Nodes = Algo10000Nodes.get_graph()
+        Algo10000Nodes.__init__(A10000Nodes)
+        loadedAlgo10000Nodes = Algo10000Nodes.load_from_json("../../data/10000Nodes.json")
+        savedAlgo10000Nodes = Algo10000Nodes.save_to_json("10000NODES.json")
+        new_Algo10000Nodes = Algo10000Nodes.get_graph()
+
+        self.assertTrue(loadedAlgo10000Nodes)
+        self.assertTrue(savedAlgo10000Nodes)
+        self.assertEqual(Algo10000Nodes.get_graph(), new_Algo10000Nodes)
+
 
     def test_shortest_path(self):
         Algo = DiGraphAlgo()
         Algo.load_from_json("..\\..\\data\\A0.json")
         dist = Algo.shortest_path(0, 2)
         comp = [Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[1], Algo.get_graph().get_all_v()[2]]
+        print(dist)
+        print(comp)
         self.assertEqual(dist, comp)
 
-    def test_tsp(self):
-        assert False
 
     def test_center_point(self):
-        assert False
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = Algo.centerPoint()
+        self.assertEqual(dist, Algo.get_graph().get_all_v()[8])
+
+    def test_connected(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        self.assertTrue(Algo.connected())
+        Algo.get_graph().remove_node(7)
+        Algo.get_graph().remove_node(10)
+        self.assertFalse(Algo.connected())
+
+    def test_BFS(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        Algo.BFS(0)
+        Algo.get_graph().remove_node(7)
+        Algo.get_graph().remove_node(10)
+        Algo.BFS(0)
 
     def test_plot_graph(self):
-        assert False
+        assert True
+
+    def test_TSP(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = Algo.TSP([Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[2]])
+        comp = [Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[1], Algo.get_graph().get_all_v()[2]]
+        self.assertEqual(dist, comp)

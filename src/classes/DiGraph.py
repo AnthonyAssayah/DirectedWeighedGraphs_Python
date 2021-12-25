@@ -97,6 +97,10 @@ class DiGraph(GraphInterface):
         self.mc += 1
         return True
 
+    def __str__(self) -> str:
+
+        return "DiGraph: |V|=" + str(self.v_size()) + " , |E|=" + str(self.e_size())
+
 
 
 
