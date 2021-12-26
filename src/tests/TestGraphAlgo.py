@@ -257,6 +257,8 @@ class TestGraphAlgo(unittest.TestCase):
         Algo.BFS(0)
 
     def test_plot_graph(self):
+        Algo = create_graph()
+        Algo.plot_graph()
         assert True
 
     def test_TSP(self):

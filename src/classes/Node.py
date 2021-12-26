@@ -6,6 +6,8 @@ class Node:
 
     # Initialize a new node
     def __init__(self, location=Geolocation(), key=0):
+        if location == None:
+            location = Geolocation()
         self.key = key
         self.location = location
         self.info = ""
