@@ -24,3 +24,6 @@ class Geolocation:
     # Return z coordinate
     def z(self) -> float:
         return self.z
+
+    def __repr__(self) -> str:
+        return "x = "+str(self.x) + ", y = " + str(self.y) + ", z =  " + str(self.z)

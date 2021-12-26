@@ -31,7 +31,7 @@ class Node:
         return self.location
 
     # Change the location of the node to new_loc
-    def set_location(self, new_loc) -> None:
+    def set_location(self,  new_loc) -> None:
         self.location = new_loc
 
     # Return the key of the node
@@ -93,3 +93,6 @@ class Node:
     def __repr__(self) -> str:
 
         return str(self.key) + ": |edges out| " + str(self._out.__len__()) + " |edges in| " + str(self._in.__len__())
+
+    def __str__(self) -> str:
+        return str(self.key)
