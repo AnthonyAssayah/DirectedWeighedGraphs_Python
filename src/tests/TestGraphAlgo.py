@@ -257,7 +257,8 @@ class TestGraphAlgo(unittest.TestCase):
         Algo.BFS(0)
 
     def test_plot_graph(self):
-        Algo = create_graph()
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
         Algo.plot_graph()
         assert True
 
