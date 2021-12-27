@@ -6,6 +6,8 @@ class Node:
 
     # Initialize a new node
     def __init__(self, location=Geolocation(), key=0):
+        if location == None:
+            location = Geolocation()
         self.key = key
         self.location = location
         self.info = ""
@@ -20,8 +22,8 @@ class Node:
     def __gt__(self, other):
         return self.tag > other.get_tag()
 
-    def __eq__(self, other):
-        return self.tag == other.get_tag()
+    # def __eq__(self, other):
+    #     return self.tag == other.get_tag()
 
     def __str__(self):
         return str(self.key)
@@ -90,9 +92,9 @@ class Node:
         else:
             return False
 
+    # def __repr__(self) -> str:
+    #
+    #     return str(self.key) + ": |edges out| " + str(self._out.__len__()) + " |edges in| " + str(self._in.__len__())
+
     def __repr__(self) -> str:
-
-        return str(self.key) + ": |edges out| " + str(self._out.__len__()) + " |edges in| " + str(self._in.__len__())
-
-    def __str__(self) -> str:
         return str(self.key)
