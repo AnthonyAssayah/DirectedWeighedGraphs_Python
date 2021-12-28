@@ -230,10 +230,10 @@ class TestGraphAlgo(unittest.TestCase):
         Algo.get_graph().remove_node(10)
         Algo.BFS(0)
 
-    # def test_plot_graph(self):
-    #     Algo = DiGraphAlgo()
-    #     Algo.load_from_json("..\\..\\data\\A0.json")
-    #     Algo.plot_graph()
+    def test_plot_graph(self):
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        Algo.plot_graph()
 
 
     def test_TSP(self):

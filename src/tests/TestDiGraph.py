@@ -82,19 +82,10 @@ class TestDiGraph(unittest.TestCase):
 
     def test_all_in_edges_of_node(self):
         graph = create_graph()
-        in_1 = 3
-        # self.assertEqual({5: 4, 3: 2, 0: 1}, graph.all_in_edges_of_node(1))
-        # test_index = 0
-        # for i in graph.all_in_edges_of_node(1):
-        #     self.assertEqual(graph.get_all_v().get(i), test_index)
-        #     test_index += 1
-        # graph = DiGraph()
-        # self.assertFalse(graph.add_edge(1, 2, 4))
-        # graph.add_node(1)
-        # self.assertFalse(graph.add_edge(0, 1, 41))
-        # self.assertFalse(graph.add_edge(1, 1, 2))
-        # graph.add_node(2)
-        # self.assertTrue(graph.add_edge(1, 2, 4))        self.assertEqual(4, graph.all_out_edges_of_node(4).get(5))
+        for key in graph.get_all_v().keys():
+            expected = graph.get_all_v().get(key).get_in()
+            actual = graph.all_in_edges_of_node(key)
+            self.assertEqual(expected, actual)
 
     def test_add_node(self):
         graph = create_graph()
