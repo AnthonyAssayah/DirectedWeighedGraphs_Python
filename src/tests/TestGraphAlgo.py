@@ -113,32 +113,6 @@ class TestGraphAlgo(unittest.TestCase):
         self.assertTrue(savedA5)
         self.assertEqual(AlgoA5.get_graph(), new_AlgoA5)
 
-        # ##################### 1000Nodes ######################
-
-        # Algo1000Nodes = create_graph()
-        # A1000Nodes = Algo1000Nodes.get_graph()
-        # Algo1000Nodes.__init__(A1000Nodes)
-        # loadedAlgo1000Nodes = Algo1000Nodes.load_from_json("../../data/1000Nodes.json")
-        # savedAlgo1000Nodes = Algo1000Nodes.save_to_json("1000NODES.json")
-        # new_Algo1000Nodes = Algo1000Nodes.get_graph()
-        #
-        # self.assertTrue(loadedAlgo1000Nodes)
-        # self.assertTrue(savedAlgo1000Nodes)
-        # self.assertEqual(Algo1000Nodes.get_graph(), new_Algo1000Nodes)
-        #
-        # # ##################### 10000Nodes ######################
-        #
-        # Algo10000Nodes = create_graph()
-        # A10000Nodes = Algo10000Nodes.get_graph()
-        # Algo10000Nodes.__init__(A10000Nodes)
-        # loadedAlgo10000Nodes = Algo10000Nodes.load_from_json("../../data/10000Nodes.json")
-        # savedAlgo10000Nodes = Algo10000Nodes.save_to_json("10000NODES.json")
-        # new_Algo10000Nodes = Algo10000Nodes.get_graph()
-        #
-        # self.assertTrue(loadedAlgo10000Nodes)
-        # self.assertTrue(savedAlgo10000Nodes)
-        # self.assertEqual(Algo10000Nodes.get_graph(), new_Algo10000Nodes)
-
 
     def test_shortest_path(self):
 
@@ -208,7 +182,7 @@ class TestGraphAlgo(unittest.TestCase):
         resA1 = (8, 9.925289024973141)
         self.assertEqual(distA1, resA1)
 
-        # ##################### A2 ######################
+        # # ##################### A2 ######################
 
         AlgoA2 = DiGraphAlgo()
         AlgoA2.load_from_json("..\\..\\data\\A2.json")
@@ -224,7 +198,7 @@ class TestGraphAlgo(unittest.TestCase):
         resA3 = (2, 8.182236568942237)
         self.assertEqual(distA3, resA3)
 
-        # ##################### A4 ######################
+        # # ##################### A4 ######################
 
         AlgoA4 = DiGraphAlgo()
         AlgoA4.load_from_json("..\\..\\data\\A4.json")
@@ -232,7 +206,7 @@ class TestGraphAlgo(unittest.TestCase):
         resA4 = (6, 8.071366078651435)
         self.assertEqual(distA4, resA4)
 
-        # ##################### A5 ######################
+        # # ##################### A5 ######################
 
         AlgoA5 = DiGraphAlgo()
         AlgoA5.load_from_json("..\\..\\data\\A5.json")
@@ -262,9 +236,52 @@ class TestGraphAlgo(unittest.TestCase):
     #     Algo.plot_graph()
 
 
-    # def test_TSP(self):
-    #     Algo = DiGraphAlgo()
-    #     Algo.load_from_json("..\\..\\data\\A0.json")
-    #     dist = Algo.TSP([Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[2]])
-    #     comp = [Algo.get_graph().get_all_v()[0], Algo.get_graph().get_all_v()[1], Algo.get_graph().get_all_v()[2]]
-    #     self.assertEqual(dist, comp)
+    def test_TSP(self):
+
+        # ##################### A0 ######################
+
+        Algo = DiGraphAlgo()
+        Algo.load_from_json("..\\..\\data\\A0.json")
+        dist = str(Algo.TSP([0, 2]))
+        comp = "([0, 1, 2], 3.165136835245062)"
+        self.assertEqual(dist, comp)
+
+        ##################### A1 ######################
+
+        AlgoA1 = DiGraphAlgo()
+        AlgoA1.load_from_json("..\\..\\data\\A1.json")
+        distA1 = str(AlgoA1.TSP([0, 2]))
+        resA1 = "([0, 1, 2], 3.0336329076522373)"
+        self.assertEqual(distA1, resA1)
+
+        # # ##################### A2 ######################
+
+        AlgoA2 = DiGraphAlgo()
+        AlgoA2.load_from_json("..\\..\\data\\A2.json")
+        distA2 = str(AlgoA2.TSP([0, 2]))
+        resA2 = "([0, 1, 2], 3.0336329076522373)"
+        self.assertEqual(distA2, resA2)
+
+        # # # ##################### A3 ######################
+
+        AlgoA3 = DiGraphAlgo()
+        AlgoA3.load_from_json("..\\..\\data\\A3.json")
+        distA3 = str(AlgoA3.TSP([0, 2]))
+        resA3 = "([0, 1, 2], 3.0336329076522373)"
+        self.assertEqual(distA3, resA3)
+
+        # # # ##################### A4 ######################
+
+        AlgoA4 = DiGraphAlgo()
+        AlgoA4.load_from_json("..\\..\\data\\A4.json")
+        distA4 = str(AlgoA4.TSP([0, 2]))
+        resA4 = "([0, 1, 2], 2.095850038785596)"
+        self.assertEqual(distA4, resA4)
+
+        # # # ##################### A5 ######################
+
+        AlgoA5 = DiGraphAlgo()
+        AlgoA5.load_from_json("..\\..\\data\\A5.json")
+        distA5 = str(AlgoA5.TSP([0, 2]))
+        resA5 = "([0, 2], 1.4195069847291193)"
+        self.assertEqual(distA5, resA5)

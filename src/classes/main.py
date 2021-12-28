@@ -24,6 +24,7 @@ def check():
     check0()
     check1()
     check2()
+    check3()
 
 
 def check0():
@@ -70,7 +71,7 @@ def check2():
       :return:
       """
     g_algo = DiGraphAlgo()
-    file = "..\\..\\data\\A5.json "
+    file = "C:/Users/USER/Desktop/EX3_OPP/data/A5.json"
     g_algo.load_from_json(file)
     g_algo.get_graph().remove_edge(13, 14)
     g_algo.save_to_json(file + "_edited")
@@ -108,10 +109,6 @@ def check3():
 
 
 if __name__ == '__main__':
-    # DGA = DiGraphAlgo()
-    # DGA.load_from_json("..\\..\\data\\A0.json")
-    # DGA.plot_graph()
-    check3()
-    # check1()
-    #check2()
-    #check1()
+
+    check()
+

@@ -62,7 +62,7 @@ class DiGraph(GraphInterface):
         if node_id in self.nodes:
             return False
 
-        self.nodes[node_id] = Node(pos, node_id)
+        self.nodes[node_id] = Node(node_id, location=pos)
         self.number_of_nodes += 1
         self.mc += 1
         return True

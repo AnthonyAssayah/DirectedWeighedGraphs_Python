@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 from src.classes.DiGraph import DiGraph
 from src.classes.Node import Node
-from src.classes.Geolocation import Geolocation
+
 
 
 def create_graph() -> DiGraph:

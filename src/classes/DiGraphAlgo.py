@@ -1,3 +1,4 @@
+import math
 import sys
 from collections import ChainMap
 from queue import PriorityQueue
@@ -6,9 +7,9 @@ import heapq
 from typing import List
 
 import numpy as np
+from matplotlib import pyplot as plt
 
-from src.classes.Geolocation import Geolocation
-from src.classes.Gui import Gui
+
 from src.interfaces.GraphAlgoInterface import GraphAlgoInterface
 from src.interfaces.GraphInterface import GraphInterface
 from src.classes.DiGraph import DiGraph
@@ -31,75 +32,69 @@ class DiGraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
 
         try:
-            loaded_graph = DiGraph()
+
             with open(file_name) as json_file:
+                loaded_graph = DiGraph()
                 data = json.load(json_file)
 
-            for node in data['Nodes']:
-                if 'pos' in node:
-                    values = np.fromstring(node['pos'], dtype=float, sep=',')
-                    loc = Geolocation(values[0], values[1], values[2])
-                else:
-                    loc = Geolocation(0, 0, 0)
+                for node in data['Nodes']:
+                    if 'pos' in node.keys():
+                        position = node['pos']
+                        spl = position.split(",")
+                        zval = float(spl.pop())
+                        yval = float(spl.pop())
+                        xval = float(spl.pop())
+                        loc = (xval, yval, zval)
+                        loaded_graph.add_node(int(node['id']), loc)
 
-                loaded_graph.add_node(node['id'], loc)
+                    else:
+                        # loc = Geolocation.nonegraph(self)
+                        loaded_graph.add_node(int(node['id']))
 
-            for edge in data['Edges']:
-                loaded_graph.add_edge(edge['src'], edge['dest'], edge['w'])
-            self.DWG = loaded_graph
-            return True
-
-        except FileNotFoundError or FileExistsError or OSError:
-            print("Cannot read the file")
-            return False
-
-    def save_to_json(self, file_name: str) -> bool:
-
-        data = {'Edges': [], 'Nodes': []}
-        vertices = self.DWG.get_all_v()
-        for n in vertices:
-            v = vertices[n]
-            if v.location is not None:
-                data['Nodes'].append({
-                    'pos': "" + str(v.location.x) + "," + str(v.location.y) + "," + str(v.location.z) + "",
-                    'id': v.key
-                })
-            else:
-                data['Nodes'].append({
-                    'id': v.key
-                })
-            for o in v._out:
-                data['Edges'].append({
-                    'src': v.key,
-                    'dest': o,
-                    'w': v.get_out()[o].weight
-
-                })
-        try:
-            with open(file_name, 'w') as file:
-                json.dump(data, file, indent=2, sort_keys=True)
+                for edge in data['Edges']:
+                    loaded_graph.add_edge(edge['src'], edge['dest'], edge['w'])
+                self.DWG = loaded_graph
                 return True
 
         except FileNotFoundError or FileExistsError or OSError:
             print("Cannot read the file")
             return False
 
+        finally:
+            json_file.close()
 
+    def save_to_json(self, file_name: str) -> bool:
+
+        try:
+            with open(file_name, 'w') as file:
+                json.dump(self.DWG, default=lambda l: l.__dict__, fp=file, indent=2)
+                return True
+
+        except FileNotFoundError or FileExistsError or OSError:
+            print("Cannot read the file")
+            return False
+
+        finally:
+            file.close()
 
     def shortest_path(self, src, dest) -> (float, list):
         djk = self.dijkstra(src)[0]
+        pathlen = self.shortest_path_dist(src, dest)
         path = []
         cur = dest
         if cur not in djk:
-            return -1, []
+            return math.inf, []
         while cur != src:
             path.append(self.DWG.get_all_v()[cur])
             cur = djk[cur]
         path.append(self.DWG.get_all_v()[src])
         path.reverse()
-        return self.dijkstra(src)[1].get(dest), path
+        return pathlen, path
 
     def centerPoint(self) -> (int, float):
+
+        if not self.connected():  # if the graph is not connected we asked to return a random Node and float = inf
+            return self.get_graph().get_all_v()[0], math.inf
 
         max_lengths = dict.fromkeys(self.DWG.get_all_v().keys(), 0)
 
@@ -141,7 +136,7 @@ class DiGraphAlgo(GraphAlgoInterface):
         while flag:
             while flag:
                 flag = False
-                if self.DWG.get_out(cur.get_key()) == None:
+                if self.DWG.get_out(cur.get_key()) is None:
                     return False
 
                 cur_edges = dict(ChainMap(cur.get_in(), cur.get_out()))
@@ -173,131 +168,67 @@ class DiGraphAlgo(GraphAlgoInterface):
         return True
 
     def plot_graph(self):
-        Gui(self)
+
+        self.draw_nodes()
+        self.draw_edges()
+        plt.show()
+
+    def draw_nodes(self):
+        locx = []
+        locy = []
+        for n in self.get_graph().get_all_v().values():
+            locx.append(n.location[0])
+            locy.append(n.location[1])
+        plt.plot(locx, locy, 'ro')
+        for r in range(len(locx)):
+            plt.annotate(r, xy=(locx[r]*0.999989, locy[r]*1.000008))
+            # plt.text(loc.x, loc.y, str(n.get_key()))
+
+    def draw_edges(self):
+        # ArrowStyle.Fancy(head_length=.4, head_width=.4, tail_width=.4)
+        for n in self.get_graph().get_all_v().keys():
+            for e in self.get_graph().all_out_edges_of_node(n).keys():
+                locx1 = self.get_graph().get_all_v().get(n).location[0]  # x src
+                locx2 = self.get_graph().get_all_v().get(e).location[0]  # x dest
+                locy1 = self.get_graph().get_all_v().get(n).location[1]  # y src
+                locy2 = self.get_graph().get_all_v().get(e).location[1]  # y dest
+                plt.annotate("", xy=(locx1, locy1), xytext=(locx2, locy2), arrowprops={'arrowstyle': "<-", 'lw': 2})  # took from the internet
 
     def TSP(self, node_list: List[int]) -> (List[int], float):
 
-        # tsp_path = []
-        # curr_list = node_list
-        #
-        # temp = node_list[0]
-        # tsp_path.append(self.DWG.get_all_v()[curr_list[0]])
-        # curr_list.pop()
-        #
-        # while curr_list:
-        #
-        #     shortest_path = sys.float_info.max
-        #     node_id = -1
-        #     node_index = -1
-        #
-        #     for i in range(len(curr_list)):
-        #
-        #         key = curr_list[i]
-        #         if self.shortest_path_dist(temp, key) < shortest_path:
-        #
-        #             shortest_path = self.shortest_path_dist(temp, key)
-        #             node_id = key
-        #             node_index = i
-        #
-        #     print("TEMP:"+str(temp) + "NODE ID:" + str(node_id))
-        #     short_list = [self.shortest_path(temp, node_id)[1]]
-        #     print(short_list)
-        #     print(self.shortest_path(temp, node_id)[1])
-        #     del short_list[0]
-        #     while short_list:
-        #         tsp_path.append(short_list.index(0))
-        #         short_list.remove(0)
-        #     node = curr_list.index(node_index)
-        #     temp = self.DWG.get_all_v()[node]
-        #     curr_list.remove(curr_list.index(node_index))
-        #
-        # return tsp_path
-        dist = []
-        min_dist = float('inf')
-        for n in self.get_graph().get_all_v().values():
-            tmp, prev = self.dijkstra((n['id']))
-            dist.insert(int(n['id']), tmp)  # check all the distances
-        for n1 in node_list:  # find the first 2 nodes
-            for n2 in node_list:
-                last_val = dist[n1][n2]
-                if (last_val < min_dist and last_val != 0):
-                    min_dist = last_val
-                    src = n1
-                    dest = n2
-        ans = []
-        node_lst_copy = node_list.copy()
-        ans.append(src)
-        ans.append(dest)
-        node_lst_copy.remove(src)
-        node_lst_copy.remove(dest)
-        last = dest
-        while len(node_lst_copy) > 0:  # check the min dist in a greedy way
-            min_dist = float('inf')
-            for n in node_lst_copy:
-                last_val = dist[last][n]
-                if (last_val < min_dist and last_val != 0):
-                    min_dist = last_val
-                    indx = n
-            if min_dist == float('inf'):
-                return []
-            node_lst_copy.remove(indx)
-            ans.append(indx)
-            last = indx
-        return ans
+        if len(node_list) == 0 or node_list is None:
+            return None
 
+        tsp_path = []
+        curr_list = node_list
+        listlen = 0
 
+        temp = node_list[0]
+        tsp_path.append(curr_list[0])
 
+        while len(curr_list) > 1:
+            short_list = []
+            curr_list.remove(temp)
+            shortest_path = math.inf
+            for i in range(len(curr_list)):
+                key = curr_list[i]
+                path = self.shortest_path_dist(temp, key)
+                if path < shortest_path:
+                    short_list = self.shortest_path(temp, key)[1]  # the path
+                    node_id = key
+                    shortest_path = path
+            if len(tsp_path) > 0:
+                short_list.pop(0)  # removing the src node because it will show twice in the list if the list bigger than 1
+                tsp_path.extend(short_list)
+            else:
+                tsp_path.extend(short_list)
 
-        # if node_list is None:
-        #     return None
-        #
-        # priority = []  # contains nodes
-        # unhandled = []  # contains ints
-        #
-        # for n in node_list:
-        #     unhandled.append(n)
-        #
-        # cur = node_list[0]
-        #
-        # priority.append(self.DWG.get_all_v()[unhandled[0]])
-        #
-        # unhandled.remove(unhandled[0])
-        #
-        # while unhandled:
-        #     shortest_dist = sys.float_info.max
-        #
-        #     id_short = sys.float_info.min
-        #     location = sys.float_info.min
-        #
-        #     for i in range(len(unhandled)):
-        #         key = unhandled[i]
-        #         temp = self.shortest_path_dist(cur, key)
-        #
-        #         if temp < shortest_dist:
-        #             shortest_dist = temp
-        #             id_short = key
-        #             location = i
-        #
-        #     shortest_path = self.shortest_path(cur, id_short)
-        #     shortest_path.remove(shortest_path[0])
-        #
-        #     while shortest_path:
-        #         priority.append(shortest_path[0])
-        #         shortest_path.remove(shortest_path[0])
-        #
-        #     node_id = unhandled[location]
-        #     cur = self.DWG.get_all_v()[node_id]
-        #     unhandled.remove(unhandled[location])
-        #
-        # if len(priority) == 1:
-        #     return None
-        # else:
-        #     return priority
+            listlen = listlen + shortest_path
+            temp = node_id
+
+        return tsp_path, listlen
 
     def shortest_path_dist(self, src, dest):
-
-        if not self.connected():
-            return -1
 
         dist = self.dijkstra(src)[1].get(dest)
         return dist
@@ -313,7 +244,7 @@ class DiGraphAlgo(GraphAlgoInterface):
         g = DiGraph()
 
         for n in self.DWG.get_all_v().values():
-            g.add_node(n.get_key(), n.get_location())
+            g.add_node(n.get_key(), n.location)
 
         for n in self.DWG.get_all_v().values():
             for e in n.get_out().values():
@@ -361,14 +292,15 @@ class DiGraphAlgo(GraphAlgoInterface):
         while unvisited_nodes:
             current_min_node = None
             for node in unvisited_nodes:
-                if current_min_node == None:
+                if current_min_node is None:
                     current_min_node = node
                 elif shortest_path[node] < shortest_path[current_min_node]:
                     current_min_node = node
 
             neighbors = self.DWG.get_all_v()[current_min_node].get_out()
             for neighbor in neighbors:
-                tentative_value = shortest_path[current_min_node] + self.DWG.get_all_v()[current_min_node].get_out()[neighbor].get_weight()
+                tentative_value = shortest_path[current_min_node] + self.DWG.get_all_v()[current_min_node].get_out()[
+                    neighbor].get_weight()
                 if tentative_value < shortest_path[neighbor]:
                     shortest_path[neighbor] = tentative_value
                     previous_nodes[neighbor] = current_min_node

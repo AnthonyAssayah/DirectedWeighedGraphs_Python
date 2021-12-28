@@ -1,15 +1,22 @@
+from random import seed, random
+
 from src.classes.Edge import Edge
-from src.classes.Geolocation import Geolocation
 
 
 class Node:
 
     # Initialize a new node
-    def __init__(self, location=Geolocation(), key=0):
-        if location == None:
-            location = Geolocation()
+    def __init__(self, key, location):
+        if location is None:
+            seed()
+            x = random() + 35  # as we got in the x values input
+            y = random() + 32  # as we got in the y values input
+            z = 0.0
+            self.location = (x, y, z)
+        else:
+            self.location = location
+
         self.key = key
-        self.location = location
         self.info = ""
         self.tag = 0
 
@@ -22,19 +29,8 @@ class Node:
     def __gt__(self, other):
         return self.tag > other.get_tag()
 
-    # def __eq__(self, other):
-    #     return self.tag == other.get_tag()
-
     def __str__(self):
         return str(self.key)
-
-    # Return the location of the node
-    def get_location(self) -> Geolocation:
-        return self.location
-
-    # Change the location of the node to new_loc
-    def set_location(self,  new_loc) -> None:
-        self.location = new_loc
 
     # Return the key of the node
     def get_key(self) -> int:
