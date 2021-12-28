@@ -42,8 +42,7 @@ Each ```Node``` contains five attributes:
 | `add_in(self, new_key, weight) -> None` | Add a new node as the destination of a new edge |
 | `remove_in(self, node_data: int) -> bool` | Return true iff,succeed to remove the node_data from the _in |
 | `remove_out(self, node_data: int) -> bool` | Return true iff,succeed to remove the node_data from the _out |
-  
-> Test on this class: *TestNode.py*
+
   
 <br />
 
@@ -69,7 +68,6 @@ Each ```Node``` contains five attributes:
 | `get_weight(self) -> float` | Return the weight of the edge |
 | `set_weight(self, new_weight) -> None` | Change the weight of the edge as *new_weight* |
   
-> Test on this class: *TestEdge.py*
   
 <br />
   
