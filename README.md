@@ -30,11 +30,9 @@ Each ```Node``` contains five attributes:
   
   | **Functions**      |    **Explanation**        |
 |-----------------|-----------------------|
-| `_init__(self, location=Geolocation(), key=0)` | Initialize a new Node set 0 as default key |
+| ` __init__(self, key, location)` | Initialize a new Node with a random locaton (seed) |
 | `get_key(self) -> int` | Returns the key associated to a specific node |
 | `set_key(self, new_key) -> None` | Change the key of the node to new_key |
-| `get_Location(self) -> Geolocation` | Returns the location (3D) of this node |
-| `set_location(self, new_loc) -> None` | Changes the location of the node as *new_loc*  |
 | `get_info(self) -> str` | Returns the meta data associated with this node |
 | `set_info(self, new_info) -> None` | Changes the meta data of the node as *new_info* |
 | `get_tag(self) -> int` | Returns the tag value of the node |
@@ -75,31 +73,7 @@ Each ```Node``` contains five attributes:
   
 <br />
   
-  ### <ins>***3 - GeoLocation***<ins>
-  
- This class contains all the elements needed for a point 3D visualization in a directed weighted graph.
-  
- Only three coordonates constitute a ```GeoLocation``` in a 3D space:
-  
-  - ```x```: the node’s value on the x axis.
-  - ```y```: the node’s value on the y axis.
-  - ```z```: the node’s value on the z axis.
-
-    <br />
-
-| **Methods**      |    **Explanation**        |
-|-----------------|-----------------------|
-| `__init__(self, x=0, y=0, z=0)` |  Initialize a new Geolocation set its parameters to 0 as default value |
-| `distance(self, loc) -> float` | Returns the distance location between two nodes |
-| `x()` | Returns the x axis value |
-| `y()` | Returns the y axis value |
-| `z()` | Returns the z axis value |
-  
-> Test on this class: *TestGeolocation.py*
-  
-  <br />
-  
-  ### <ins>***4 - DiGraph***<ins>
+  ### <ins>***3 - DiGraph***<ins>
   
   
   DiGraph implemented by GraphInterface, this class gathers all the necessary components and features in order to build a Directed and Weighted Graph.
@@ -130,7 +104,7 @@ Each ```Node``` contains five attributes:
   
   <br />
   
-   ### <ins>***5 - DiGraphAlgo***<ins>
+   ### <ins>***4 - DiGraphAlgo***<ins>
   
   Implemented by GraphAlgoInterface, DiGraphAlgo is the most important class that does the most "hardest job". Indeed, it will use certain algorithms and import external libraries which will allow us to perform several actions on the DiGraph.
   
@@ -151,7 +125,10 @@ Each ```Node``` contains five attributes:
 | `getTranspose(self):` | Inverse the direction of all the edges of the graph. |
 | `BFS(self, src):` | Applicate BFS algorithm means visiting all the nodes of a graph in order to verify if the graph is connected. |
 | `TSP(self, node_lst: List[int]) -> (List[int], float)` | Finds the shortest path that visits all the nodes in the list. |
-| `plot_graph(self) -> None` | Plots the graph in a gui. |
+| `plot_graph(self)` | Plots the graph in a gui. |
+| `draw_nodes(self)` | Draw the nodes of the graph by their location. |
+| `draw_edges(self)` | Draw the edges of the graph by their src and dest location. |
+
   
 > Test on this class: *TestDiGraphAlgo.py* 
 
